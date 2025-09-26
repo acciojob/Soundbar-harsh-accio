@@ -1,30 +1,33 @@
-//your JS code here. If required.
-// Select all sound buttons and stop button
 const soundButtons = document.querySelectorAll('.buttons .btn');
 const stopButton = document.querySelector('.buttons .stop');
 
 let currentAudio = null;
 
-// Function to play sound
 soundButtons.forEach(button => {
   button.addEventListener('click', () => {
-    // Stop currently playing audio
+    // Stop previous audio if playing
     if (currentAudio) {
       currentAudio.pause();
       currentAudio.currentTime = 0;
+      currentAudio.remove(); // remove from DOM
     }
 
-    // Play new audio based on button id
-    const soundFile = `sounds/${button.id}.mp3`;
-    currentAudio = new Audio(soundFile);
-    currentAudio.play();
+    // Create an audio element in DOM
+    const audio = document.createElement('audio');
+    audio.src = `sounds/${button.id}.mp3`;
+    audio.autoplay = true; // play automatically
+    audio.id = "audio-player"; // optional id
+    document.body.appendChild(audio);
+
+    currentAudio = audio;
   });
 });
 
-// Stop button functionality
 stopButton.addEventListener('click', () => {
   if (currentAudio) {
     currentAudio.pause();
     currentAudio.currentTime = 0;
+    currentAudio.remove(); // remove from DOM
+    currentAudio = null;
   }
 });
